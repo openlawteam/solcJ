@@ -9,26 +9,21 @@ plugins {
 group 'org.ethereum'
 version '0.4.25'
 
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.properties['bintrayUser']
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.properties['bintrayApiKey']
-    configurations = ['archives']
-
-    dryRun = false //Whether to run this as dry-run, without deploying
-    publish = true //If version should be auto published after an upload
-    override = false
-
-    pkg {
-        userOrg = 'ethereum'
-        repo = 'maven'
-        name = 'org.ethereum.solcJ-all'
-        licenses = []
-        vcsUrl = 'https://github.com/ether-camp/solcJ.git'
-        labels = ['Solidity']
-        publicDownloadNumbers = true
-        version {
-            name = project.version
-            desc = ''
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/openlawteam/solcJ")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            artifactId = "solcj-all"
+            from(components.java)
         }
     }
 }
