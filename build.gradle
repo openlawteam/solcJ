@@ -1,13 +1,26 @@
 plugins {
     id 'java'
+    id 'java-library'
     id 'maven'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.8.4'
     id 'de.undercouch.download' version '3.4.3'
 }
 
+compileJava.options.fork = true
+
 group 'org.ethereum'
 version '0.4.25'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    // toolchain {
+    //     languageVersion.set(JavaLanguageVersion.of(8))
+    // }
+}
 
 publishing {
     repositories {
@@ -65,5 +78,3 @@ task cleanUpFiles(dependsOn: unzipFile, type: Delete) {
 
 assemble.dependsOn downloadStaticLinuxFile
 assemble.dependsOn cleanUpFiles
-
-
